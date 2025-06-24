@@ -1,0 +1,21 @@
+version: '3.8'
+services:
+  selenium-firefox:
+    image: selenium/standalone-firefox:latest
+    ports:
+      - "4444:4444"
+    shm_size: "2g"
+    container_name: selenium-firefox
+
+  jenkins:
+    image: my-jenkins-agent # Use your custom Jenkins agent image
+    ports:
+      - "8080:8080" # Jenkins UI
+      - "50000:50000" # Jenkins agent communication
+    volumes:
+      - jenkins_home:/var/jenkins_home # Persist Jenkins data
+    depends_on:
+      - selenium-firefox # Ensure selenium-firefox starts first
+
+volumes:
+  jenkins_home:
